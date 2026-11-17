@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
 <title>CityU MSc CS 往年卷索引</title>
 <meta name="description" content="香港城市大学 MSc CS 往年考试卷索引：13 门课 41 份真题，标注年份、答案与缺口。只索引不托管。">
 <meta property="og:title" content="CityU MSc CS 往年卷索引">
@@ -77,6 +78,16 @@
   .note{font-size:12.5px;color:var(--warn);padding:10px 0 8px;border-bottom:1px dashed var(--border);margin-bottom:6px}
   .card.none .note{color:var(--muted);border:none;margin:0;padding:12px 0 6px}
 
+  .ask{display:inline-block;margin-top:10px;font-size:13px;color:var(--accent);
+    text-decoration:none;border-bottom:1px dashed #1f6feb;padding-bottom:1px;transition:.15s}
+  .ask:hover{color:#79c0ff;border-bottom-color:var(--accent)}
+
+  .askbar{margin-top:22px;padding:15px 17px;background:var(--panel);border:1px solid var(--border);
+    border-radius:8px;font-size:13.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px;align-items:baseline}
+  .askbar a{color:var(--accent);text-decoration:none}
+  .askbar a:hover{text-decoration:underline}
+  .askbar b{color:var(--text);font-weight:500}
+
   .files{display:flex;flex-direction:column}
   .f{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #1f242c;text-decoration:none;color:inherit}
   .f:last-child{border-bottom:none}
@@ -136,6 +147,12 @@
 </div>
 
 <div class="grid" id="grid"></div>
+
+<div class="askbar">
+  <b>没找到你要的课？</b>
+  <span>课没收录、年份不够、缺答案——说一声，能补的就补。</span>
+  <a id="fb-bottom" href="#" target="_blank" rel="noopener">告诉我 →</a>
+</div>
 
 <footer>
   <div>
@@ -268,6 +285,10 @@ const DATA = [
   }
 ];
 
+// ============ 反馈入口 ============
+// 换成腾讯问卷/表单链接后，页面上所有反馈入口自动更新
+const FEEDBACK_URL = "https://github.com/VonMannstein/cityu-pastpapers/issues/new?labels=feedback&title=%5B%E5%8F%8D%E9%A6%88%5D%20";
+
 // ============ 渲染 ============
 const gh = (r,b,p) => `https://github.com/${r}/blob/${b}/` + p.split('/').map(encodeURIComponent).join('/');
 const totalFiles = DATA.reduce((s,c)=>s+c.files.length,0);
@@ -338,6 +359,7 @@ function render(){
       <div class="body">
         <div class="note">${c.note}</div>
         ${c.files.length? `<div class="files">${files}</div>` : ''}
+        ${c.level==='none'? `<a class="ask" href="${FEEDBACK_URL}" target="_blank" rel="noopener">这门课的卷子你有？告诉我 →</a>` : ''}
       </div>
     </div>`;
   }).join('');
@@ -360,6 +382,10 @@ render();
 // 默认展开存量最多的一门
 const firstCard = document.querySelector('.card');
 if (firstCard) firstCard.classList.add('open');
+
+// 兜底反馈入口
+const fbBottom = document.getElementById('fb-bottom');
+if (fbBottom) fbBottom.href = FEEDBACK_URL;
 </script>
 </body>
 </html>
