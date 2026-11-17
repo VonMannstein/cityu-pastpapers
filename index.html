@@ -88,6 +88,15 @@
   .askbar a:hover{text-decoration:underline}
   .askbar b{color:var(--text);font-weight:500}
 
+  .contact{display:none;margin-top:12px;padding:16px 18px;background:var(--panel);
+    border:1px solid var(--border);border-radius:8px;align-items:center;gap:18px}
+  .contact.show{display:flex}
+  .contact img{width:104px;height:104px;border-radius:6px;background:#fff;padding:4px;
+    display:block;flex-shrink:0;object-fit:contain}
+  .contact .txt{font-size:13.5px;color:var(--muted);line-height:1.75}
+  .contact .txt b{color:var(--text);font-weight:500;display:block;margin-bottom:3px}
+  @media(max-width:680px){.contact{flex-direction:column;align-items:flex-start;gap:12px}}
+
   .files{display:flex;flex-direction:column}
   .f{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #1f242c;text-decoration:none;color:inherit}
   .f:last-child{border-bottom:none}
@@ -152,6 +161,15 @@
   <b>没找到你要的课？</b>
   <span>课没收录、年份不够、缺答案——说一声，能补的就补。</span>
   <a id="fb-bottom" href="#" target="_blank" rel="noopener">告诉我 →</a>
+</div>
+
+<div class="contact" id="contact">
+  <img id="qr" alt="微信二维码">
+  <div class="txt">
+    <b>有问题、有不满，或者发现哪里标错了</b>
+    直接扫码找我。链接打不开、年份不全、归类不对，都可以说。<br>
+    这不是客服，是我本人在看。
+  </div>
 </div>
 
 <footer>
@@ -267,6 +285,14 @@ if (firstCard) firstCard.classList.add('open');
 // 兜底反馈入口
 const fbBottom = document.getElementById('fb-bottom');
 if (fbBottom) fbBottom.href = FEEDBACK_URL;
+
+// 微信二维码：图片存在才显示，缺图时整块移除，不会留裂图
+const qr = document.getElementById('qr');
+if (qr) {
+  qr.onload = () => document.getElementById('contact').classList.add('show');
+  qr.onerror = () => document.getElementById('contact').remove();
+  qr.src = 'assets/wechat.png';
+}
 </script>
 </body>
 </html>
