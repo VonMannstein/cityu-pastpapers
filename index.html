@@ -88,14 +88,15 @@
   .askbar a:hover{text-decoration:underline}
   .askbar b{color:var(--text);font-weight:500}
 
-  .contact{display:none;margin-top:12px;padding:16px 18px;background:var(--panel);
-    border:1px solid var(--border);border-radius:8px;align-items:center;gap:18px}
-  .contact.show{display:flex}
-  .contact img{width:104px;height:104px;border-radius:6px;background:#fff;padding:4px;
-    display:block;flex-shrink:0;object-fit:contain}
-  .contact .txt{font-size:13.5px;color:var(--muted);line-height:1.75}
-  .contact .txt b{color:var(--text);font-weight:500;display:block;margin-bottom:3px}
-  @media(max-width:680px){.contact{flex-direction:column;align-items:flex-start;gap:12px}}
+  .contact{display:none;margin-top:14px}
+  .contact.show{display:block}
+  .contact-toggle{background:none;border:none;padding:0 0 1px;font-family:inherit;font-size:13.5px;
+    color:var(--accent);cursor:pointer;border-bottom:1px dashed #1f6feb;transition:.15s}
+  .contact-toggle:hover{color:#79c0ff;border-bottom-color:var(--accent)}
+  .qr-box{display:none;margin-top:12px}
+  .qr-box.open{display:block}
+  .qr-box img{width:104px;height:104px;border-radius:6px;background:#fff;padding:4px;
+    display:block;object-fit:contain}
 
   .files{display:flex;flex-direction:column}
   .f{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #1f242c;text-decoration:none;color:inherit}
@@ -164,11 +165,9 @@
 </div>
 
 <div class="contact" id="contact">
-  <img id="qr" alt="微信二维码">
-  <div class="txt">
-    <b>有问题、有不满，或者发现哪里标错了</b>
-    直接扫码找我。链接打不开、年份不全、归类不对，都可以说。<br>
-    这不是客服，是我本人在看。
+  <button class="contact-toggle" id="contactToggle" type="button">如有问题请联系我</button>
+  <div class="qr-box" id="qrBox">
+    <img id="qr" alt="微信二维码">
   </div>
 </div>
 
@@ -286,12 +285,21 @@ if (firstCard) firstCard.classList.add('open');
 const fbBottom = document.getElementById('fb-bottom');
 if (fbBottom) fbBottom.href = FEEDBACK_URL;
 
-// 微信二维码：图片存在才显示，缺图时整块移除，不会留裂图
+// 微信二维码：图片存在才显示入口，缺图时整块移除，不会留裂图；点击才展开
 const qr = document.getElementById('qr');
 if (qr) {
-  qr.onload = () => document.getElementById('contact').classList.add('show');
-  qr.onerror = () => document.getElementById('contact').remove();
+  const contact = document.getElementById('contact');
+  const toggle = document.getElementById('contactToggle');
+  const box = document.getElementById('qrBox');
+
+  qr.onload = () => contact.classList.add('show');
+  qr.onerror = () => contact.remove();
   qr.src = 'assets/wechat.jpg';
+
+  toggle.onclick = () => {
+    const open = box.classList.toggle('open');
+    toggle.textContent = open ? '收起' : '如有问题请联系我';
+  };
 }
 </script>
 </body>
